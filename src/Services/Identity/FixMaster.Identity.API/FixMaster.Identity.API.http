@@ -1,0 +1,6 @@
+@FixMaster.Identity.API_HostAddress = http://localhost:5280
+
+GET {{FixMaster.Identity.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

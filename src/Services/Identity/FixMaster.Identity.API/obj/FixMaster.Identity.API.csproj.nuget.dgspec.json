@@ -1,0 +1,407 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.API\\FixMaster.Identity.API.csproj": {}
+  },
+  "projects": {
+    "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj",
+        "projectName": "FixMaster.Common",
+        "projectPath": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj",
+        "packagesPath": "C:\\Users\\Mohamed Nabil\\.nuget\\packages\\",
+        "outputPath": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Mohamed Nabil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[14.1.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.3.11, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Serilog.Sinks.Seq": {
+              "target": "Package",
+              "version": "[9.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.API\\FixMaster.Identity.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.API\\FixMaster.Identity.API.csproj",
+        "projectName": "FixMaster.Identity.API",
+        "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.API\\FixMaster.Identity.API.csproj",
+        "packagesPath": "C:\\Users\\Mohamed Nabil\\.nuget\\packages\\",
+        "outputPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Mohamed Nabil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj"
+              },
+              "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj"
+              },
+              "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Infrastructure\\FixMaster.Identity.Infrastructure.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Infrastructure\\FixMaster.Identity.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj",
+        "projectName": "FixMaster.Identity.Application",
+        "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj",
+        "packagesPath": "C:\\Users\\Mohamed Nabil\\.nuget\\packages\\",
+        "outputPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Mohamed Nabil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj"
+              },
+              "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Domain\\FixMaster.Identity.Domain.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Domain\\FixMaster.Identity.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Domain\\FixMaster.Identity.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Domain\\FixMaster.Identity.Domain.csproj",
+        "projectName": "FixMaster.Identity.Domain",
+        "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Domain\\FixMaster.Identity.Domain.csproj",
+        "packagesPath": "C:\\Users\\Mohamed Nabil\\.nuget\\packages\\",
+        "outputPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Mohamed Nabil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Infrastructure\\FixMaster.Identity.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Infrastructure\\FixMaster.Identity.Infrastructure.csproj",
+        "projectName": "FixMaster.Identity.Infrastructure",
+        "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Infrastructure\\FixMaster.Identity.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Mohamed Nabil\\.nuget\\packages\\",
+        "outputPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Mohamed Nabil\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Common\\FixMaster.Common\\FixMaster.Common.csproj"
+              },
+              "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj": {
+                "projectPath": "D:\\FixMaster\\src\\Services\\Identity\\FixMaster.Identity.Application\\FixMaster.Identity.Application.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

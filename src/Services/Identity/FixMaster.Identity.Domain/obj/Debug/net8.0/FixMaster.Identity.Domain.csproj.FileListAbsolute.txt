@@ -1,0 +1,16 @@
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\bin\Debug\net8.0\FixMaster.Identity.Domain.deps.json
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\bin\Debug\net8.0\FixMaster.Identity.Domain.dll
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\bin\Debug\net8.0\FixMaster.Identity.Domain.pdb
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\bin\Debug\net8.0\FixMaster.Common.dll
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\bin\Debug\net8.0\FixMaster.Common.pdb
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.csproj.AssemblyReference.cache
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.AssemblyInfoInputs.cache
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.AssemblyInfo.cs
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.csproj.CoreCompileInputs.cache
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.sourcelink.json
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaste.F5CD9D3B.Up2Date
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.dll
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\refint\FixMaster.Identity.Domain.dll
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\FixMaster.Identity.Domain.pdb
+D:\FixMaster\src\Services\Identity\FixMaster.Identity.Domain\obj\Debug\net8.0\ref\FixMaster.Identity.Domain.dll

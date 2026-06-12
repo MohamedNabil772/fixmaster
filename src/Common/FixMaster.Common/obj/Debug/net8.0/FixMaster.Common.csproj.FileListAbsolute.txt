@@ -1,0 +1,13 @@
+D:\FixMaster\src\Common\FixMaster.Common\bin\Debug\net8.0\FixMaster.Common.deps.json
+D:\FixMaster\src\Common\FixMaster.Common\bin\Debug\net8.0\FixMaster.Common.dll
+D:\FixMaster\src\Common\FixMaster.Common\bin\Debug\net8.0\FixMaster.Common.pdb
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.csproj.AssemblyReference.cache
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.AssemblyInfoInputs.cache
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.AssemblyInfo.cs
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.csproj.CoreCompileInputs.cache
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.sourcelink.json
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.dll
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\refint\FixMaster.Common.dll
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\FixMaster.Common.pdb
+D:\FixMaster\src\Common\FixMaster.Common\obj\Debug\net8.0\ref\FixMaster.Common.dll

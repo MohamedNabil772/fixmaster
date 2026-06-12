@@ -3,4 +3,10 @@
   <Folder Name="/src/Common/">
     <Project Path="src/Common/FixMaster.Common/FixMaster.Common.csproj" />
   </Folder>
+  <Folder Name="/src/Services/Identity/">
+    <Project Path="src/Services/Identity/FixMaster.Identity.API/FixMaster.Identity.API.csproj" />
+    <Project Path="src/Services/Identity/FixMaster.Identity.Application/FixMaster.Identity.Application.csproj" />
+    <Project Path="src/Services/Identity/FixMaster.Identity.Domain/FixMaster.Identity.Domain.csproj" />
+    <Project Path="src/Services/Identity/FixMaster.Identity.Infrastructure/FixMaster.Identity.Infrastructure.csproj" />
+  </Folder>
 </Solution>
