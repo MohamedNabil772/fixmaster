@@ -6,7 +6,8 @@ export interface ServiceRequest {
   id: string;
   title: string;
   description: string;
-  status: 'pending' | 'active' | 'completed' | 'cancelled';
+  category: string;
+  status: 'Open' | 'BiddingClosed' | 'InProgress' | 'Completed' | 'Cancelled';
   budget: number;
   createdAt: string;
   bids?: Bid[];
@@ -16,29 +17,42 @@ export interface Bid {
   id: string;
   requestId: string;
   masterId: string;
-  masterName: string;
   amount: number;
   description: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: 'Pending' | 'Accepted' | 'Rejected';
   createdAt: string;
 }
 
-export interface BidData {
-  requestId: string;
-  amount: number;
-  description: string;
+export interface PaginatedList<T> {
+  items: T[];
+  pageNumber: number;
+  totalPages: number;
+  totalCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 }
 
-export interface FeedbackData {
-  requestId: string;
-  rating: number;
-  comment: string;
+export interface ChartDataPoint {
+  label: string;
+  value: number;
+}
+
+export interface AdminStats {
+  totalUsers: number;
+  totalBids: number;
+  totalMasters: number;
+  totalEarnings: number;
+  bidsByService: ChartDataPoint[];
+  requestsByService: ChartDataPoint[];
+  mastersByService: ChartDataPoint[];
+  timelineData: ChartDataPoint[];
 }
 
 export const useBiddingStore = defineStore('bidding', () => {
   const serviceRequests = ref<ServiceRequest[]>([])
-  const allBids = ref<Bid[]>([])
+  const allBids = ref<PaginatedList<Bid> | null>(null)
   const myBids = ref<Bid[]>([])
+  const adminStats = ref<AdminStats | null>(null)
   const isLoading = ref(false)
 
   async function fetchServiceRequests() {
@@ -48,25 +62,6 @@ export const useBiddingStore = defineStore('bidding', () => {
       serviceRequests.value = response.data
     } catch (error) {
       console.error('Failed to fetch service requests:', error)
-      throw error
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  async function fetchRequestDetails(requestId: string) {
-    isLoading.value = true
-    try {
-      const response = await api.get<ServiceRequest>(`/api/bidding/requests/${requestId}`)
-      const index = serviceRequests.value.findIndex(r => r.id === requestId)
-      if (index !== -1) {
-        serviceRequests.value[index] = response.data
-      } else {
-        serviceRequests.value.push(response.data)
-      }
-      return response.data
-    } catch (error) {
-      console.error('Failed to fetch request details:', error)
       throw error
     } finally {
       isLoading.value = false
@@ -90,11 +85,13 @@ export const useBiddingStore = defineStore('bidding', () => {
     }
   }
 
-  async function fetchAllBids(status?: string) {
+  async function fetchAllBids(pageNumber = 1, pageSize = 10, status?: string) {
     isLoading.value = true
     try {
-      const url = status ? `/api/bidding/bids?status=${status}` : '/api/bidding/bids'
-      const response = await api.get<Bid[]>(url)
+      const url = status 
+        ? `/api/bidding/bids?pageNumber=${pageNumber}&pageSize=${pageSize}&status=${status}` 
+        : `/api/bidding/bids?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      const response = await api.get<PaginatedList<Bid>>(url)
       allBids.value = response.data
     } catch (error) {
       console.error('Failed to fetch all bids:', error)
@@ -104,7 +101,23 @@ export const useBiddingStore = defineStore('bidding', () => {
     }
   }
 
-  async function submitBid(bidData: BidData) {
+  async function fetchAdminStats(filterType = 'year', service?: string) {
+    isLoading.value = true
+    try {
+      const url = service 
+        ? `/api/bidding/statistics/admin?filterType=${filterType}&service=${service}`
+        : `/api/bidding/statistics/admin?filterType=${filterType}`
+      const response = await api.get<AdminStats>(url)
+      adminStats.value = response.data
+    } catch (error) {
+      console.error('Failed to fetch admin stats:', error)
+      throw error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function submitBid(bidData: { requestId: string; amount: number; description: string }) {
     isLoading.value = true
     try {
       const response = await api.post('/api/bidding/bids', bidData)
@@ -143,31 +156,18 @@ export const useBiddingStore = defineStore('bidding', () => {
     }
   }
 
-  async function submitFeedback(feedbackData: FeedbackData) {
-    isLoading.value = true
-    try {
-      const response = await api.post('/api/bidding/feedback', feedbackData)
-      return response.data
-    } catch (error) {
-      console.error('Failed to submit feedback:', error)
-      throw error
-    } finally {
-      isLoading.value = false
-    }
-  }
-
   return {
     serviceRequests,
     allBids,
     myBids,
+    adminStats,
     isLoading,
     fetchServiceRequests,
-    fetchRequestDetails,
     fetchBids,
     fetchAllBids,
+    fetchAdminStats,
     submitBid,
     acceptBid,
-    fetchMyBids,
-    submitFeedback
+    fetchMyBids
   }
 })

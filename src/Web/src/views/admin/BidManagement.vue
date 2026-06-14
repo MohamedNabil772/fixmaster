@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { useBiddingStore } from '../../stores/bidding'
-import AppCard from '../../components/common/AppCard.vue'
 
 const biddingStore = useBiddingStore()
 const statusFilter = ref('')
+const currentPage = ref(1)
+const pageSize = ref(10)
 
 const fetchBids = () => {
-  biddingStore.fetchAllBids(statusFilter.value || undefined)
+  biddingStore.fetchAllBids(currentPage.value, pageSize.value, statusFilter.value || undefined)
 }
 
 onMounted(() => {
   fetchBids()
 })
 
-watch(statusFilter, () => {
+watch([statusFilter, currentPage], () => {
   fetchBids()
 })
 
@@ -31,13 +32,14 @@ const formatDate = (dateString: string) => {
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3 class="font-semibold text-lg text-blueGray-700">
-                All System Bids
+                Bids Management
               </h3>
             </div>
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right flex items-center justify-end gap-4">
+              <span class="text-xs font-bold text-blueGray-400 uppercase">Filter Status:</span>
               <select 
                 v-model="statusFilter"
-                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-48"
+                class="border border-blueGray-200 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow-sm outline-none focus:outline-none focus:ring w-48"
               >
                 <option value="">All Statuses</option>
                 <option value="Pending">Pending</option>
@@ -48,7 +50,6 @@ const formatDate = (dateString: string) => {
           </div>
         </div>
         <div class="block w-full overflow-x-auto">
-          <!-- Projects table -->
           <table class="items-center w-full bg-transparent border-collapse">
             <thead>
               <tr>
@@ -70,35 +71,62 @@ const formatDate = (dateString: string) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="bid in biddingStore.allBids" :key="bid.id">
+              <tr v-for="bid in biddingStore.allBids?.items" :key="bid.id">
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {{ bid.requestId.slice(0, 8) }}...
+                  <span class="font-bold text-blue-600 cursor-pointer hover:underline">
+                    {{ bid.requestId.slice(0, 8) }}
+                  </span>
+                </td>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold text-blueGray-600">
+                  ${{ bid.amount.toLocaleString() }}
                 </td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  ${{ bid.amount }}
+                  <span class="px-2 py-1 rounded text-[10px] font-bold uppercase"
+                    :class="{
+                      'bg-orange-100 text-orange-600': bid.status === 'Pending',
+                      'bg-emerald-100 text-emerald-600': bid.status === 'Accepted',
+                      'bg-red-100 text-red-600': bid.status === 'Rejected'
+                    }">
+                    {{ bid.status }}
+                  </span>
                 </td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i class="fas fa-circle mr-2" :class="{
-                    'text-orange-500': bid.status === 'Pending',
-                    'text-emerald-500': bid.status === 'Accepted',
-                    'text-red-500': bid.status === 'Rejected'
-                  }"></i>
-                  {{ bid.status }}
-                </td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-blueGray-400">
                   {{ bid.masterId.slice(0, 8) }}...
                 </td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {{ formatDate(bid.createdAt) }}
                 </td>
               </tr>
-              <tr v-if="biddingStore.allBids.length === 0">
-                <td colspan="5" class="text-center py-4 text-blueGray-500">
+              <tr v-if="!biddingStore.allBids?.items.length && !biddingStore.isLoading">
+                <td colspan="5" class="text-center py-12 text-blueGray-400 italic">
                   No bids found matching the criteria.
                 </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="px-4 py-3 border-t border-blueGray-100 bg-blueGray-50 flex items-center justify-between">
+          <div class="text-xs text-blueGray-500 font-bold uppercase">
+            Showing {{ ((currentPage - 1) * pageSize) + 1 }} to {{ Math.min(currentPage * pageSize, biddingStore.allBids?.totalCount || 0) }} of {{ biddingStore.allBids?.totalCount }} entries
+          </div>
+          <div class="flex gap-2">
+            <button 
+              @click="currentPage--"
+              :disabled="!biddingStore.allBids?.hasPreviousPage"
+              class="px-3 py-1 bg-white border border-blueGray-200 rounded text-xs font-bold text-blueGray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blueGray-100"
+            >
+              Previous
+            </button>
+            <button 
+              @click="currentPage++"
+              :disabled="!biddingStore.allBids?.hasNextPage"
+              class="px-3 py-1 bg-white border border-blueGray-200 rounded text-xs font-bold text-blueGray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blueGray-100"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

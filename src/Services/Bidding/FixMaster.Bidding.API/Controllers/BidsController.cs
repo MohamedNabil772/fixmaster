@@ -19,11 +19,14 @@ public class BidsController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     [HttpGet]
-    public async Task<ActionResult<List<BidDto>>> GetAll([FromQuery] string? status)
+    public async Task<ActionResult<FixMaster.Bidding.Application.Common.Models.PaginatedList<FixMaster.Bidding.Application.Bids.Queries.GetAllBids.BidDto>>> GetAll(
+        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageSize = 10, 
+        [FromQuery] string? status = null)
     {
-        return Ok(await _mediator.Send(new GetAllBidsQuery(status)));
+        return Ok(await _mediator.Send(new FixMaster.Bidding.Application.Bids.Queries.GetBidsPaginated.GetBidsPaginatedQuery(pageNumber, pageSize, status)));
     }
 
     [Authorize(Roles = "Client,Master")]
