@@ -11,7 +11,20 @@ builder.Host.UseSerilog();
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("DefaultPolicy");
 
 // Use Correlation ID Middleware
 app.UseMiddleware<CorrelationIdMiddleware>();

@@ -17,7 +17,20 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5266")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("DefaultPolicy");
 
 // Seed Roles
 using (var scope = app.Services.CreateScope())
@@ -25,7 +38,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     try
     {
-        await FixMaster.Identity.Infrastructure.Persistence.DbInitializer.SeedRolesAsync(services);
+        await FixMaster.Identity.Infrastructure.Persistence.DbInitializer.SeedAsync(services);
     }
     catch (Exception ex)
     {
@@ -42,7 +55,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

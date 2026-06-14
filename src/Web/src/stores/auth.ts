@@ -17,7 +17,9 @@ export interface AuthResponse extends User {
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(JSON.parse(localStorage.getItem('user') || 'null'))
   const token = ref<string | null>(localStorage.getItem('token'))
+  const allUsers = ref<User[]>([])
   const isAuthenticated = computed(() => !!token.value)
+  const isSuperAdmin = computed(() => user.value?.role === 'SuperAdmin')
 
   function setToken(newToken: string) {
     token.value = newToken
@@ -41,7 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
       email,
       password
     })
-    
+
     const { token: newToken, ...userData } = response.data
     setToken(newToken)
     setUser(userData)
@@ -55,20 +57,37 @@ export const useAuthStore = defineStore('auth', () => {
       lastName,
       role
     })
-    
+
     const { token: newToken, ...userData } = response.data
     setToken(newToken)
     setUser(userData)
   }
 
+  async function fetchAllUsers() {
+    const response = await api.get<User[]>('/api/identity/users')
+    allUsers.value = response.data
+  }
+
+  async function updateUserRole(userId: string, newRole: string) {
+    await api.post(`/api/identity/users/${userId}/role`, `"${newRole}"`, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    await fetchAllUsers()
+  }
+
   return {
     user,
     token,
+    allUsers,
     isAuthenticated,
+    isSuperAdmin,
     setToken,
     setUser,
     logout,
     login,
-    register
+    register,
+    fetchAllUsers,
+    updateUserRole
   }
 })
+

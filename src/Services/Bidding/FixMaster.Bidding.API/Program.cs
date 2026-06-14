@@ -17,7 +17,35 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5266")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
+
+// Initialize Database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<FixMaster.Bidding.Infrastructure.Persistence.BiddingDbContext>();
+        await context.Database.EnsureCreatedAsync();
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "An error occurred while initializing the Bidding database");
+    }
+}
+
+app.UseCors("DefaultPolicy");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CorrelationIdMiddleware>();
@@ -28,7 +56,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 

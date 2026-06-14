@@ -23,7 +23,7 @@ const router = createRouter({
     {
       path: '/admin',
       component: () => import('../layouts/AdminLayout.vue'),
-      meta: { requiresAuth: true, roles: ['Admin'] },
+      meta: { requiresAuth: true, roles: ['Admin', 'SuperAdmin'] },
       children: [
         {
           path: '',
@@ -38,6 +38,17 @@ const router = createRouter({
           path: 'services',
           name: 'service-management',
           component: () => import('../views/admin/ServiceManagement.vue')
+        },
+        {
+          path: 'bids',
+          name: 'bid-management',
+          component: () => import('../views/admin/BidManagement.vue')
+        },
+        {
+          path: 'users',
+          name: 'user-management',
+          meta: { roles: ['SuperAdmin'] },
+          component: () => import('../views/admin/UserManagement.vue')
         }
       ]
     },

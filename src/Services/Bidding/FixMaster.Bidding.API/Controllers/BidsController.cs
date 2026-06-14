@@ -1,4 +1,5 @@
 using FixMaster.Bidding.Application.Bids.Commands.SubmitBid;
+using FixMaster.Bidding.Application.Bids.Queries.GetAllBids;
 using FixMaster.Bidding.Application.Bids.Queries.GetBidsByRequest;
 using FixMaster.Bidding.Application.Requests.Commands.SelectMaster;
 using MediatR;
@@ -18,8 +19,16 @@ public class BidsController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult<List<BidDto>>> GetAll([FromQuery] string? status)
+    {
+        return Ok(await _mediator.Send(new GetAllBidsQuery(status)));
+    }
+
+    [Authorize(Roles = "Client,Master")]
     [HttpGet("request/{requestId}")]
-    public async Task<ActionResult<IEnumerable<BidResponse>>> GetByRequest(Guid requestId)
+    public async Task<ActionResult<IEnumerable<FixMaster.Bidding.Application.Bids.Queries.GetBidsByRequest.BidResponse>>> GetByRequest(Guid requestId)
     {
         return Ok(await _mediator.Send(new GetBidsByRequestQuery(requestId)));
     }

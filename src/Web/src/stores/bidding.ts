@@ -37,13 +37,14 @@ export interface FeedbackData {
 
 export const useBiddingStore = defineStore('bidding', () => {
   const serviceRequests = ref<ServiceRequest[]>([])
+  const allBids = ref<Bid[]>([])
   const myBids = ref<Bid[]>([])
   const isLoading = ref(false)
 
   async function fetchServiceRequests() {
     isLoading.value = true
     try {
-      const response = await api.get<ServiceRequest[]>('/api/requests')
+      const response = await api.get<ServiceRequest[]>('/api/bidding/requests')
       serviceRequests.value = response.data
     } catch (error) {
       console.error('Failed to fetch service requests:', error)
@@ -56,7 +57,7 @@ export const useBiddingStore = defineStore('bidding', () => {
   async function fetchRequestDetails(requestId: string) {
     isLoading.value = true
     try {
-      const response = await api.get<ServiceRequest>(`/api/requests/${requestId}`)
+      const response = await api.get<ServiceRequest>(`/api/bidding/requests/${requestId}`)
       const index = serviceRequests.value.findIndex(r => r.id === requestId)
       if (index !== -1) {
         serviceRequests.value[index] = response.data
@@ -75,7 +76,7 @@ export const useBiddingStore = defineStore('bidding', () => {
   async function fetchBids(requestId: string) {
     isLoading.value = true
     try {
-      const response = await api.get<Bid[]>(`/api/bids/request/${requestId}`)
+      const response = await api.get<Bid[]>(`/api/bidding/bids/request/${requestId}`)
       const request = serviceRequests.value.find(r => r.id === requestId)
       if (request) {
         request.bids = response.data
@@ -89,10 +90,24 @@ export const useBiddingStore = defineStore('bidding', () => {
     }
   }
 
+  async function fetchAllBids(status?: string) {
+    isLoading.value = true
+    try {
+      const url = status ? `/api/bidding/bids?status=${status}` : '/api/bidding/bids'
+      const response = await api.get<Bid[]>(url)
+      allBids.value = response.data
+    } catch (error) {
+      console.error('Failed to fetch all bids:', error)
+      throw error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   async function submitBid(bidData: BidData) {
     isLoading.value = true
     try {
-      const response = await api.post('/api/bids', bidData)
+      const response = await api.post('/api/bidding/bids', bidData)
       return response.data
     } catch (error) {
       console.error('Failed to submit bid:', error)
@@ -105,7 +120,7 @@ export const useBiddingStore = defineStore('bidding', () => {
   async function acceptBid(requestId: string, bidId: string) {
     isLoading.value = true
     try {
-      const response = await api.post('/api/bids/select-master', { requestId, bidId })
+      const response = await api.post('/api/bidding/bids/select-master', { requestId, bidId })
       return response.data
     } catch (error) {
       console.error('Failed to accept bid:', error)
@@ -118,7 +133,7 @@ export const useBiddingStore = defineStore('bidding', () => {
   async function fetchMyBids() {
     isLoading.value = true
     try {
-      const response = await api.get<Bid[]>('/api/bidding/my-bids')
+      const response = await api.get<Bid[]>('/api/bidding/bids/my-bids')
       myBids.value = response.data
     } catch (error) {
       console.error('Failed to fetch my bids:', error)
@@ -131,7 +146,7 @@ export const useBiddingStore = defineStore('bidding', () => {
   async function submitFeedback(feedbackData: FeedbackData) {
     isLoading.value = true
     try {
-      const response = await api.post('/api/feedback', feedbackData)
+      const response = await api.post('/api/bidding/feedback', feedbackData)
       return response.data
     } catch (error) {
       console.error('Failed to submit feedback:', error)
@@ -143,11 +158,13 @@ export const useBiddingStore = defineStore('bidding', () => {
 
   return {
     serviceRequests,
+    allBids,
     myBids,
     isLoading,
     fetchServiceRequests,
     fetchRequestDetails,
     fetchBids,
+    fetchAllBids,
     submitBid,
     acceptBid,
     fetchMyBids,

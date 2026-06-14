@@ -11,11 +11,12 @@ const biddingStore = useBiddingStore()
 const authStore = useAuthStore()
 
 const isClient = computed(() => authStore.user?.role === 'Client')
+const isAdmin = computed(() => authStore.user?.role === 'Admin')
 
 onMounted(() => {
   if (isClient.value) {
     biddingStore.fetchServiceRequests()
-  } else {
+  } else if (!isAdmin.value) {
     biddingStore.fetchMyBids()
   }
 })
@@ -74,6 +75,27 @@ function navigateToRequest(id: string) {
             </div>
           </template>
         </AppCard>
+      </div>
+    </template>
+
+    <!-- Admin Dashboard -->
+    <template v-else-if="isAdmin">
+      <div class="flex flex-col items-center justify-center py-24 bg-white rounded-lg shadow-md border border-gray-100">
+        <div class="p-4 bg-emerald-100 rounded-full mb-6">
+          <i class="fas fa-user-shield text-4xl text-emerald-600"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Control Center</h2>
+        <p class="text-gray-500 mb-8 max-w-md text-center">
+          Welcome to the FixMaster administrative dashboard. From here you can manage all system activities, monitor bids, and oversee service requests.
+        </p>
+        <div class="flex gap-4">
+          <AppButton variant="primary" @click="router.push('/admin/bids')">
+            Manage Bids
+          </AppButton>
+          <AppButton variant="secondary" @click="router.push('/admin/services')">
+            System Overview
+          </AppButton>
+        </div>
       </div>
     </template>
 

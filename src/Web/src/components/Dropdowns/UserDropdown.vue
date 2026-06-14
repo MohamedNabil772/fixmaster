@@ -2,19 +2,15 @@
   <div>
     <a
       class="text-blueGray-500 block"
-      href="#pablo"
+      href="javascript:void(0)"
       ref="btnDropdownRef"
       v-on:click="toggleDropdown($event)"
     >
       <div class="items-center flex">
         <span
-          class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
+          class="w-10 h-10 text-sm text-white bg-blue-100 inline-flex items-center justify-center rounded-full border border-blue-200"
         >
-          <img
-            alt="..."
-            class="w-full rounded-full align-middle border-none shadow-lg"
-            :src="image"
-          />
+          <i class="fas fa-user text-blue-600"></i>
         </span>
       </div>
     </a>
@@ -26,59 +22,64 @@
         block: dropdownPopoverShow,
       }"
     >
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+      <div class="px-4 py-2 border-b border-solid border-blueGray-100 mb-2">
+        <p class="text-sm font-bold text-blueGray-700 truncate">{{ authStore.user?.firstName }} {{ authStore.user?.lastName }}</p>
+        <p class="text-xs text-blueGray-500 truncate">{{ authStore.user?.email }}</p>
+      </div>
+      
+      <router-link
+        to="/profile"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 hover:bg-blueGray-100"
+        @click="dropdownPopoverShow = false"
       >
-        Action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Another action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Something else here
-      </a>
+        <i class="fas fa-id-card mr-2 text-blueGray-400"></i>
+        My Profile
+      </router-link>
+
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
+      
       <a
         href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-red-600 hover:bg-red-50"
+        @click="handleLogout"
       >
-        Seprated link
+        <i class="fas fa-sign-out-alt mr-2"></i>
+        Logout
       </a>
     </div>
   </div>
 </template>
 
-<script>
-import { createPopper } from "@popperjs/core";
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { createPopper } from "@popperjs/core"
+import { useAuthStore } from "../../stores/auth"
 
-import image from "@/assets/img/team-1-800x800.jpg";
+const router = useRouter()
+const authStore = useAuthStore()
 
-export default {
-  data() {
-    return {
-      dropdownPopoverShow: false,
-      image: image,
-    };
-  },
-  methods: {
-    toggleDropdown: function (event) {
-      event.preventDefault();
-      if (this.dropdownPopoverShow) {
-        this.dropdownPopoverShow = false;
-      } else {
-        this.dropdownPopoverShow = true;
-        createPopper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
-          placement: "bottom-start",
-        });
-      }
-    },
-  },
-};
+const dropdownPopoverShow = ref(false)
+const btnDropdownRef = ref<HTMLElement | null>(null)
+const popoverDropdownRef = ref<HTMLElement | null>(null)
+
+const toggleDropdown = (event: Event) => {
+  event.preventDefault()
+  if (dropdownPopoverShow.value) {
+    dropdownPopoverShow.value = false
+  } else {
+    dropdownPopoverShow.value = true
+    if (btnDropdownRef.value && popoverDropdownRef.value) {
+      createPopper(btnDropdownRef.value, popoverDropdownRef.value, {
+        placement: "bottom-end",
+      })
+    }
+  }
+}
+
+const handleLogout = () => {
+  dropdownPopoverShow.value = false
+  authStore.logout()
+  router.push('/login')
+}
 </script>

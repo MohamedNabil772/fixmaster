@@ -70,13 +70,13 @@
         </form>
 
         <!-- Divider -->
-        <template v-if="isAdmin">
+        <template v-if="isAdmin || isSuperAdmin">
           <hr class="my-4 md:min-w-full" />
           <!-- Heading -->
           <h6
             class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
           >
-            Admin Layout Pages
+            Administrative Control
           </h6>
           <!-- Navigation -->
 
@@ -100,14 +100,14 @@
                     class="fas fa-tv mr-2 text-sm"
                     :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                   ></i>
-                  Dashboard
+                  Overview
                 </a>
               </router-link>
             </li>
 
-            <li class="items-center">
+            <li v-if="isSuperAdmin" class="items-center">
               <router-link
-                to="/admin/settings"
+                to="/admin/users"
                 v-slot="{ href, navigate, isActive }"
               >
                 <a
@@ -121,10 +121,34 @@
                   ]"
                 >
                   <i
-                    class="fas fa-tools mr-2 text-sm"
+                    class="fas fa-users-cog mr-2 text-sm"
                     :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                   ></i>
-                  Settings
+                  User Management
+                </a>
+              </router-link>
+            </li>
+
+            <li class="items-center">
+              <router-link
+                to="/admin/bids"
+                v-slot="{ href, navigate, isActive }"
+              >
+                <a
+                  :href="href"
+                  @click="navigate"
+                  class="text-xs uppercase py-3 font-bold block"
+                  :class="[
+                    isActive
+                      ? 'text-emerald-500 hover:text-emerald-600'
+                      : 'text-blueGray-700 hover:text-blueGray-500',
+                  ]"
+                >
+                  <i
+                    class="fas fa-gavel mr-2 text-sm"
+                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                  ></i>
+                  Bids Management
                 </a>
               </router-link>
             </li>
@@ -334,6 +358,9 @@ export default {
     ...mapState(useAuthStore, ["user", "isAuthenticated"]),
     isAdmin() {
       return this.user?.role === "Admin";
+    },
+    isSuperAdmin() {
+      return this.user?.role === "SuperAdmin";
     },
     isMaster() {
       return this.user?.role === "Master";

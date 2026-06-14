@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import UserDropdown from '../components/Dropdowns/UserDropdown.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -10,11 +11,6 @@ const isSidebarOpen = ref(false)
 const userRole = computed(() => authStore.user?.role || 'User')
 const isClient = computed(() => authStore.user?.role === 'Client')
 const isMaster = computed(() => authStore.user?.role === 'Master')
-
-const handleLogout = () => {
-  authStore.logout()
-  router.push('/login')
-}
 </script>
 
 <template>
@@ -22,7 +18,7 @@ const handleLogout = () => {
     <!-- Header -->
     <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-10">
       <div class="flex items-center gap-4">
-        <button @click="isSidebarOpen = !isSidebarOpen" class="lg:hidden p-2">
+        <button @click="isSidebarOpen = !isSidebarOpen" class="lg:hidden p-2 text-gray-600">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -30,20 +26,18 @@ const handleLogout = () => {
         <h1 class="text-xl font-bold text-primary">FixMaster</h1>
       </div>
       
-      <div class="flex items-center gap-4">
-        <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800 uppercase tracking-wider">
+      <div class="flex items-center gap-6">
+        <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800 uppercase tracking-wider hidden sm:inline-block">
           {{ userRole }}
         </span>
-        <span class="text-sm font-medium hidden md:inline">{{ authStore.user?.email }}</span>
-        <button @click="handleLogout" class="text-sm text-accent font-medium hover:underline">
-          Logout
-        </button>
+        
+        <UserDropdown />
       </div>
     </header>
 
     <div class="flex-1 flex overflow-hidden">
       <!-- Sidebar (Desktop) -->
-      <aside class="hidden lg:flex w-64 bg-secondary flex-col">
+      <aside class="hidden lg:flex w-64 bg-secondary flex-col shadow-inner">
         <nav class="flex-1 px-4 py-6 space-y-2">
           <router-link to="/dashboard" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
             {{ isClient ? 'My Requests' : 'My Bids' }}
@@ -55,10 +49,6 @@ const handleLogout = () => {
           
           <router-link v-if="isMaster" to="/browse-requests" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
             Browse Requests
-          </router-link>
-
-          <router-link to="/profile" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
-            Profile
           </router-link>
         </nav>
       </aside>
@@ -94,9 +84,6 @@ const handleLogout = () => {
         </router-link>
         <router-link v-if="isMaster" to="/browse-requests" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
           Browse Requests
-        </router-link>
-        <router-link to="/profile" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
-          Profile
         </router-link>
       </nav>
     </aside>
