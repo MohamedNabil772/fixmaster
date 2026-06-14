@@ -13,6 +13,7 @@ const firstName = ref('')
 const lastName = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const role = ref('Client')
 const isLoading = ref(false)
 
 const handleRegister = async () => {
@@ -23,7 +24,7 @@ const handleRegister = async () => {
   
   isLoading.value = true
   try {
-    await authStore.register(email.value, password.value, firstName.value, lastName.value)
+    await authStore.register(email.value, password.value, firstName.value, lastName.value, role.value)
     router.push('/dashboard')
   } catch (error) {
     console.error('Registration failed', error)
@@ -58,6 +59,20 @@ const handleRegister = async () => {
       required
       placeholder="Enter your email"
     />
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Account Type</label>
+      <div class="flex gap-6">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="radio" v-model="role" value="Client" class="w-4 h-4 text-primary border-gray-300 focus:ring-primary" />
+          <span class="text-sm text-gray-700">Client (Need Repairs)</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="radio" v-model="role" value="Master" class="w-4 h-4 text-primary border-gray-300 focus:ring-primary" />
+          <span class="text-sm text-gray-700">Master (Service Provider)</span>
+        </label>
+      </div>
+    </div>
     
     <AppInput
       v-model="password"

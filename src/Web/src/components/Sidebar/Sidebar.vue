@@ -128,10 +128,21 @@
                 </a>
               </router-link>
             </li>
+          </ul>
+        </template>
 
+        <!-- Master Section -->
+        <template v-if="isMaster">
+          <hr class="my-4 md:min-w-full" />
+          <h6
+            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          >
+            Master Menu
+          </h6>
+          <ul class="md:flex-col md:min-w-full flex flex-col list-none">
             <li class="items-center">
               <router-link
-                to="/admin/tables"
+                to="/dashboard"
                 v-slot="{ href, navigate, isActive }"
               >
                 <a
@@ -145,17 +156,16 @@
                   ]"
                 >
                   <i
-                    class="fas fa-table mr-2 text-sm"
+                    class="fas fa-tv mr-2 text-sm"
                     :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                   ></i>
-                  Tables
+                  My Bids
                 </a>
               </router-link>
             </li>
-
             <li class="items-center">
               <router-link
-                to="/admin/maps"
+                to="/browse-requests"
                 v-slot="{ href, navigate, isActive }"
               >
                 <a
@@ -169,10 +179,68 @@
                   ]"
                 >
                   <i
-                    class="fas fa-map-marked mr-2 text-sm"
+                    class="fas fa-search mr-2 text-sm"
                     :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                   ></i>
-                  Maps
+                  Browse Requests
+                </a>
+              </router-link>
+            </li>
+          </ul>
+        </template>
+
+        <!-- Client Section -->
+        <template v-if="isClient">
+          <hr class="my-4 md:min-w-full" />
+          <h6
+            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          >
+            Client Menu
+          </h6>
+          <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+            <li class="items-center">
+              <router-link
+                to="/dashboard"
+                v-slot="{ href, navigate, isActive }"
+              >
+                <a
+                  :href="href"
+                  @click="navigate"
+                  class="text-xs uppercase py-3 font-bold block"
+                  :class="[
+                    isActive
+                      ? 'text-emerald-500 hover:text-emerald-600'
+                      : 'text-blueGray-700 hover:text-blueGray-500',
+                  ]"
+                >
+                  <i
+                    class="fas fa-tv mr-2 text-sm"
+                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                  ></i>
+                  My Requests
+                </a>
+              </router-link>
+            </li>
+            <li class="items-center">
+              <router-link
+                to="/post-request"
+                v-slot="{ href, navigate, isActive }"
+              >
+                <a
+                  :href="href"
+                  @click="navigate"
+                  class="text-xs uppercase py-3 font-bold block"
+                  :class="[
+                    isActive
+                      ? 'text-emerald-500 hover:text-emerald-600'
+                      : 'text-blueGray-700 hover:text-blueGray-500',
+                  ]"
+                >
+                  <i
+                    class="fas fa-plus mr-2 text-sm"
+                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                  ></i>
+                  Post New Request
                 </a>
               </router-link>
             </li>
@@ -180,16 +248,17 @@
         </template>
 
         <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
+        <hr v-if="!isAuthenticated" class="my-4 md:min-w-full" />
         <!-- Heading -->
         <h6
+          v-if="!isAuthenticated"
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
         >
           Auth Layout Pages
         </h6>
         <!-- Navigation -->
 
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+        <ul v-if="!isAuthenticated" class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
             <router-link
               class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
@@ -262,9 +331,15 @@ export default {
     };
   },
   computed: {
-    ...mapState(useAuthStore, ["user"]),
+    ...mapState(useAuthStore, ["user", "isAuthenticated"]),
     isAdmin() {
       return this.user?.role === "Admin";
+    },
+    isMaster() {
+      return this.user?.role === "Master";
+    },
+    isClient() {
+      return this.user?.role === "Client";
     },
   },
   methods: {

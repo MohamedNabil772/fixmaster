@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const isSidebarOpen = ref(false)
+
+const userRole = computed(() => authStore.user?.role || 'User')
+const isClient = computed(() => authStore.user?.role === 'Client')
+const isMaster = computed(() => authStore.user?.role === 'Master')
 
 const handleLogout = () => {
   authStore.logout()
@@ -27,6 +31,9 @@ const handleLogout = () => {
       </div>
       
       <div class="flex items-center gap-4">
+        <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800 uppercase tracking-wider">
+          {{ userRole }}
+        </span>
         <span class="text-sm font-medium hidden md:inline">{{ authStore.user?.email }}</span>
         <button @click="handleLogout" class="text-sm text-accent font-medium hover:underline">
           Logout
@@ -39,9 +46,20 @@ const handleLogout = () => {
       <aside class="hidden lg:flex w-64 bg-secondary flex-col">
         <nav class="flex-1 px-4 py-6 space-y-2">
           <router-link to="/dashboard" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
-            Dashboard
+            {{ isClient ? 'My Requests' : 'My Bids' }}
           </router-link>
-          <!-- More links can be added here -->
+          
+          <router-link v-if="isClient" to="/post-request" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
+            Post New Request
+          </router-link>
+          
+          <router-link v-if="isMaster" to="/browse-requests" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
+            Browse Requests
+          </router-link>
+
+          <router-link to="/profile" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
+            Profile
+          </router-link>
         </nav>
       </aside>
 
@@ -69,7 +87,16 @@ const handleLogout = () => {
       </div>
       <nav class="px-4 py-6 space-y-2">
         <router-link to="/dashboard" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
-          Dashboard
+          {{ isClient ? 'My Requests' : 'My Bids' }}
+        </router-link>
+        <router-link v-if="isClient" to="/post-request" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
+          Post New Request
+        </router-link>
+        <router-link v-if="isMaster" to="/browse-requests" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
+          Browse Requests
+        </router-link>
+        <router-link to="/profile" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
+          Profile
         </router-link>
       </nav>
     </aside>

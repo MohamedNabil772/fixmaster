@@ -5,11 +5,12 @@ import api from '../services/api'
 export interface User {
   id: string;
   email: string;
+  firstName: string;
+  lastName: string;
   role: string;
 }
 
-export interface AuthResponse {
-  user: User;
+export interface AuthResponse extends User {
   token: string;
 }
 
@@ -41,22 +42,23 @@ export const useAuthStore = defineStore('auth', () => {
       password
     })
     
-    const { token: newToken, user: newUser } = response.data
+    const { token: newToken, ...userData } = response.data
     setToken(newToken)
-    setUser(newUser)
+    setUser(userData)
   }
 
-  async function register(email: string, password: string, firstName: string, lastName: string) {
+  async function register(email: string, password: string, firstName: string, lastName: string, role: string = 'Client') {
     const response = await api.post<AuthResponse>('/api/identity/users/register', {
       email,
       password,
       firstName,
-      lastName
+      lastName,
+      role
     })
     
-    const { token: newToken, user: newUser } = response.data
+    const { token: newToken, ...userData } = response.data
     setToken(newToken)
-    setUser(newUser)
+    setUser(userData)
   }
 
   return {
