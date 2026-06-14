@@ -65,6 +65,16 @@ FixMaster is a platform connecting service providers ("Masters") with clients fo
 - Development of the mobile app for on-the-go bidding and notifications.
 - Push notification service for alerts.
 
+### Phase 7: Deployment & CI/CD (Team Lead + Tester)
+- Setup Kubernetes/Docker Swarm for production-grade orchestration.
+- Implement CI/CD pipelines for automated testing and deployment.
+- Configure Prometheus/Grafana for real-time monitoring.
+
+### Phase 8: Scaling & Security Hardening (Backend + Frontend)
+- Implement Redis caching for high-traffic bidding data.
+- Security hardening (Rate limiting, WAF, Database encryption).
+- Performance optimization and load balancing.
+
 ---
 
 ## 5. Architectural Mandates
@@ -83,10 +93,12 @@ FixMaster is a platform connecting service providers ("Masters") with clients fo
 - **Integration Tests**: TestContainers for PostgreSQL.
 - **E2E Tests**: Playwright for Vue.js flows.
 - **Performance**: Stress test the bidding broadcast mechanism.
+- **Security**: Automated OWASP ZAP scans in the CI pipeline.
 
 ---
 
 ## 7. Next Steps
-1. **Approval**: User reviews and approves this PLAN.md.
+1. **Approval**: User reviews and approves the extended PLAN.md.
 2. **Initialization**: Agents are assigned to Phase 1 tasks.
 3. **First Sprint**: Setup of Identity and Bidding Microservices.
+4. **DevOps Setup**: Initialize CI/CD pipelines early in the process.

@@ -21,4 +21,9 @@ namespace FixMaster.Common.Exceptions
     {
         public ValidationException(string message) : base(message, "VALIDATION_ERROR", 400) { }
     }
+
+    public class UnauthorizedException : BaseException
+    {
+        public UnauthorizedException(string message) : base(message, "UNAUTHORIZED", 401) { }
+    }
 }

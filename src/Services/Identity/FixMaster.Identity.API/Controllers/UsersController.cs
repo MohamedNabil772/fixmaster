@@ -1,4 +1,5 @@
 using FixMaster.Identity.Application.Users.Commands.RegisterUser;
+using FixMaster.Identity.Application.Users.Commands.LoginUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,13 @@ namespace FixMaster.Identity.API.Controllers
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

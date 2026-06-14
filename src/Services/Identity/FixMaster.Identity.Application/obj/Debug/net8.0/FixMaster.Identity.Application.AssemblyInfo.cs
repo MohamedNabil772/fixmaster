@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FixMaster.Identity.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6264f0b51074df8838bbc5752e233d8dc3d6ef45")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b634c5d012b91db54e7d84ab031313f08b91fa20")]
 [assembly: System.Reflection.AssemblyProductAttribute("FixMaster.Identity.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FixMaster.Identity.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

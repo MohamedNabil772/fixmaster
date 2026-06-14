@@ -3,10 +3,22 @@
   <Folder Name="/src/Common/">
     <Project Path="src/Common/FixMaster.Common/FixMaster.Common.csproj" />
   </Folder>
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Bidding/">
+    <Project Path="src/Services/Bidding/FixMaster.Bidding.API/FixMaster.Bidding.API.csproj" />
+    <Project Path="src/Services/Bidding/FixMaster.Bidding.Application/FixMaster.Bidding.Application.csproj" />
+    <Project Path="src/Services/Bidding/FixMaster.Bidding.Domain/FixMaster.Bidding.Domain.csproj" />
+    <Project Path="src/Services/Bidding/FixMaster.Bidding.Infrastructure/FixMaster.Bidding.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/src/Services/Identity/">
     <Project Path="src/Services/Identity/FixMaster.Identity.API/FixMaster.Identity.API.csproj" />
     <Project Path="src/Services/Identity/FixMaster.Identity.Application/FixMaster.Identity.Application.csproj" />
     <Project Path="src/Services/Identity/FixMaster.Identity.Domain/FixMaster.Identity.Domain.csproj" />
     <Project Path="src/Services/Identity/FixMaster.Identity.Infrastructure/FixMaster.Identity.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/Services/" />
+  <Folder Name="/tests/Services/Bidding/">
+    <Project Path="tests/Services/Bidding/FixMaster.Bidding.UnitTests/FixMaster.Bidding.UnitTests.csproj" />
   </Folder>
 </Solution>
