@@ -2,15 +2,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import AppButton from '../components/common/AppButton.vue'
-import AppInput from '../components/common/AppInput.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
-const email = ref('')
 const firstName = ref('')
 const lastName = ref('')
+const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const role = ref('Client')
@@ -36,70 +34,82 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="handleRegister" class="space-y-6">
-    <div class="grid grid-cols-2 gap-4">
-      <AppInput
-        v-model="firstName"
-        label="First Name"
-        required
-        placeholder="John"
-      />
-      <AppInput
-        v-model="lastName"
-        label="Last Name"
-        required
-        placeholder="Doe"
-      />
-    </div>
+  <div class="container mx-auto px-4 h-full">
+    <div class="flex content-center items-center justify-center h-full pt-16">
+      <div class="w-full lg:w-6/12 px-4">
+        <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+          <div class="rounded-t mb-0 px-6 py-6">
+            <div class="text-center mb-3">
+              <h6 class="text-blueGray-500 text-sm font-bold uppercase tracking-wider">
+                Create your account
+              </h6>
+            </div>
+            <hr class="mt-6 border-b-1 border-blueGray-300" />
+          </div>
+          <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+            <form @submit.prevent="handleRegister">
+              <div class="flex flex-wrap">
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">First Name</label>
+                    <input v-model="firstName" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none w-full" placeholder="John" required />
+                  </div>
+                </div>
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Last Name</label>
+                    <input v-model="lastName" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none w-full" placeholder="Doe" required />
+                  </div>
+                </div>
+              </div>
 
-    <AppInput
-      v-model="email"
-      label="Email address"
-      type="email"
-      required
-      placeholder="Enter your email"
-    />
+              <div class="relative w-full mb-3 px-4">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Email</label>
+                <input v-model="email" type="email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none w-full" placeholder="Email" required />
+              </div>
 
-    <div class="space-y-2">
-      <label class="block text-sm font-medium text-gray-700">Account Type</label>
-      <div class="flex gap-6">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" v-model="role" value="Client" class="w-4 h-4 text-primary border-gray-300 focus:ring-primary" />
-          <span class="text-sm text-gray-700">Client (Need Repairs)</span>
-        </label>
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="radio" v-model="role" value="Master" class="w-4 h-4 text-primary border-gray-300 focus:ring-primary" />
-          <span class="text-sm text-gray-700">Master (Service Provider)</span>
-        </label>
+              <div class="relative w-full mb-6 px-4">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Account Type</label>
+                <div class="flex gap-4">
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input type="radio" v-model="role" value="Client" class="form-radio border-0 rounded text-blueGray-700 ml-1 w-5 h-5" />
+                    <span class="ml-2 text-sm font-semibold text-blueGray-600">Client</span>
+                  </label>
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input type="radio" v-model="role" value="Master" class="form-radio border-0 rounded text-blueGray-700 ml-1 w-5 h-5" />
+                    <span class="ml-2 text-sm font-semibold text-blueGray-600">Master</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap">
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Password</label>
+                    <input v-model="password" type="password" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none w-full" placeholder="Password" required />
+                  </div>
+                </div>
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Confirm Password</label>
+                    <input v-model="confirmPassword" type="password" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none w-full" placeholder="Confirm Password" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-6">
+                <button
+                  class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                  type="submit"
+                  :disabled="isLoading"
+                >
+                  {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-    
-    <AppInput
-      v-model="password"
-      label="Password"
-      type="password"
-      required
-      placeholder="Create a password"
-    />
-
-    <AppInput
-      v-model="confirmPassword"
-      label="Confirm Password"
-      type="password"
-      required
-      placeholder="Confirm your password"
-    />
-
-    <div class="flex items-center justify-between">
-      <div class="text-sm">
-        <router-link to="/login" class="font-medium text-accent hover:text-opacity-80">
-          Already have an account? Sign in
-        </router-link>
-      </div>
-    </div>
-
-    <AppButton type="submit" :disabled="isLoading" class="w-full">
-      {{ isLoading ? 'Creating account...' : 'Register' }}
-    </AppButton>
-  </form>
+  </div>
 </template>

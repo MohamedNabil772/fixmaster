@@ -72,6 +72,16 @@ const router = createRouter({
           component: () => import('../views/Dashboard.vue')
         },
         {
+          path: 'browse-requests',
+          name: 'browse-requests',
+          component: () => import('../views/BrowseRequests.vue')
+        },
+        {
+          path: 'post-request',
+          name: 'post-request',
+          component: () => import('../views/PostRequest.vue')
+        },
+        {
           path: 'requests/:id',
           name: 'request-detail',
           component: () => import('../views/RequestDetail.vue')

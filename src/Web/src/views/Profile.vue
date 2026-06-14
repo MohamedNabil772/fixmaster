@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
-import AppButton from '../components/common/AppButton.vue'
-import AppInput from '../components/common/AppInput.vue'
+import api from '../services/api'
 
 const authStore = useAuthStore()
 const firstName = ref('')
@@ -23,16 +22,29 @@ const handleImageClick = () => {
   fileInput.value?.click()
 }
 
-const handleFileChange = (event: Event) => {
+const handleFileChange = async (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0]
-  if (file) {
-    // In a real app, we would upload to storage (S3/Azure)
-    // For this prototype, we'll use a Base64 string or a fake URL
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      profilePictureUrl.value = e.target?.result as string
+  if (file && authStore.user) {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    try {
+      isLoading.value = true
+      // 1. Upload to FileServer
+      const uploadRes = await api.post('/api/media/uploads', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      
+      const imageUrl = uploadRes.data.url
+      profilePictureUrl.value = imageUrl
+      
+      // 2. Update local state (user still needs to click Save for other info)
+    } catch (error) {
+      console.error('Failed to upload image:', error)
+      alert('Upload failed')
+    } finally {
+      isLoading.value = false
     }
-    reader.readAsDataURL(file)
   }
 }
 
@@ -51,82 +63,105 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto py-10 px-4">
-    <div class="bg-white shadow rounded-lg overflow-hidden">
-      <div class="bg-primary px-6 py-8">
-        <h2 class="text-2xl font-bold text-white">Edit Your Profile</h2>
-        <p class="text-blue-100 text-sm">Manage your account information and preferences.</p>
-      </div>
-
-      <div class="p-8">
-        <form @submit.prevent="handleSubmit" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Image Section -->
-          <div class="flex flex-col items-center space-y-4">
-            <div 
-              @click="handleImageClick"
-              class="relative w-40 h-40 rounded-full border-4 border-gray-100 shadow-sm overflow-hidden cursor-pointer group"
+  <div class="flex flex-wrap mt-4">
+    <div class="w-full lg:w-8/12 px-4 mx-auto">
+      <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+        <div class="rounded-t bg-white mb-0 px-6 py-6">
+          <div class="text-center flex justify-between">
+            <h6 class="text-blueGray-700 text-xl font-bold">My Account</h6>
+            <button
+              @click="handleSubmit"
+              :disabled="isLoading"
+              class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 disabled:opacity-50"
+              type="button"
             >
-              <img 
-                v-if="profilePictureUrl" 
-                :src="profilePictureUrl" 
-                class="w-full h-full object-cover"
-              />
-              <div v-else class="w-full h-full bg-blue-50 flex items-center justify-center">
-                <i class="fas fa-user text-5xl text-blue-300"></i>
+              {{ isLoading ? 'Saving...' : 'Save Profile' }}
+            </button>
+          </div>
+        </div>
+        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+          <form @submit.prevent="handleSubmit">
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              User Information
+            </h6>
+            <div class="flex flex-wrap">
+              <div class="w-full lg:w-12/12 px-4 mb-6 flex justify-center">
+                <div 
+                  @click="handleImageClick"
+                  class="relative w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden cursor-pointer group"
+                >
+                  <img v-if="profilePictureUrl" :src="profilePictureUrl" class="w-full h-full object-cover" />
+                  <div v-else class="w-full h-full bg-blue-50 flex items-center justify-center">
+                    <i class="fas fa-user text-4xl text-blue-300"></i>
+                  </div>
+                  <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                    <i class="fas fa-camera text-white text-xl"></i>
+                  </div>
+                  <input type="file" ref="fileInput" class="hidden" accept="image/*" @change="handleFileChange" />
+                </div>
               </div>
               
-              <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                <i class="fas fa-camera text-white text-2xl"></i>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    First Name
+                  </label>
+                  <input
+                    v-model="firstName"
+                    type="text"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    v-model="lastName"
+                    type="text"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+                </div>
+              </div>
+              <div class="w-full lg:w-12/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    :value="authStore.user?.email"
+                    disabled
+                    type="email"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-blueGray-200 rounded text-sm shadow focus:outline-none w-full ease-linear transition-all duration-150 cursor-not-allowed"
+                  />
+                </div>
               </div>
             </div>
-            <p class="text-xs text-gray-500 text-center">Click to change profile picture</p>
-            <input 
-              type="file" 
-              ref="fileInput" 
-              class="hidden" 
-              accept="image/*"
-              @change="handleFileChange"
-            />
-          </div>
 
-          <!-- Info Section -->
-          <div class="md:col-span-2 space-y-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <AppInput
-                v-model="firstName"
-                label="First Name"
-                placeholder="Your first name"
-                required
-              />
-              <AppInput
-                v-model="lastName"
-                label="Last Name"
-                placeholder="Your last name"
-                required
-              />
-            </div>
+            <hr class="mt-6 border-b-1 border-blueGray-300" />
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-              <input 
-                :value="authStore.user?.email" 
-                disabled 
-                class="w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-2 text-gray-500 cursor-not-allowed"
-              />
-              <p class="mt-1 text-xs text-gray-400">Email address cannot be changed.</p>
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              Role Details
+            </h6>
+            <div class="flex flex-wrap">
+              <div class="w-full lg:w-12/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    Current Role
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 bg-primary text-white font-bold rounded-md text-xs uppercase">
+                      {{ authStore.user?.role }}
+                    </span>
+                    <p class="text-xs text-blueGray-400">Your account type defines your permissions in the system.</p>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div class="pt-4 flex justify-end">
-              <AppButton 
-                type="submit" 
-                :disabled="isLoading"
-                class="px-8"
-              >
-                {{ isLoading ? 'Saving Changes...' : 'Save Profile' }}
-              </AppButton>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
