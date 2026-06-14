@@ -8,6 +8,7 @@ export interface User {
   firstName: string;
   lastName: string;
   role: string;
+  profilePictureUrl?: string;
 }
 
 export interface AuthResponse extends User {
@@ -75,6 +76,19 @@ export const useAuthStore = defineStore('auth', () => {
     await fetchAllUsers()
   }
 
+  async function updateProfile(firstName: string, lastName: string, profilePictureUrl?: string) {
+    await api.put('/api/identity/users/profile', {
+      firstName,
+      lastName,
+      profilePictureUrl
+    })
+    
+    if (user.value) {
+      const updatedUser = { ...user.value, firstName, lastName, profilePictureUrl }
+      setUser(updatedUser)
+    }
+  }
+
   return {
     user,
     token,
@@ -87,7 +101,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     fetchAllUsers,
-    updateUserRole
+    updateUserRole,
+    updateProfile
   }
 })
-

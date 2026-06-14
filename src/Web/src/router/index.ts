@@ -75,6 +75,11 @@ const router = createRouter({
           path: 'requests/:id',
           name: 'request-detail',
           component: () => import('../views/RequestDetail.vue')
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: () => import('../views/Profile.vue')
         }
       ]
     }

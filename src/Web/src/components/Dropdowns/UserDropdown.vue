@@ -8,9 +8,10 @@
     >
       <div class="items-center flex">
         <span
-          class="w-10 h-10 text-sm text-white bg-blue-100 inline-flex items-center justify-center rounded-full border border-blue-200"
+          class="w-10 h-10 text-sm text-white bg-blue-100 inline-flex items-center justify-center rounded-full border border-blue-200 overflow-hidden"
         >
-          <i class="fas fa-user text-blue-600"></i>
+          <img v-if="authStore.user?.profilePictureUrl" :src="authStore.user.profilePictureUrl" class="w-full h-full object-cover" />
+          <i v-else class="fas fa-user text-blue-600"></i>
         </span>
       </div>
     </a>

@@ -2,9 +2,11 @@ using FixMaster.Identity.Application.Users.Commands.RegisterUser;
 using FixMaster.Identity.Application.Users.Commands.LoginUser;
 using FixMaster.Identity.Application.Users.Queries.GetAllUsers;
 using FixMaster.Identity.Application.Users.Commands.UpdateUserRole;
+using FixMaster.Identity.Application.Users.Commands.UpdateProfile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FixMaster.Identity.API.Controllers
 {
@@ -17,6 +19,22 @@ namespace FixMaster.Identity.API.Controllers
         public UsersController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [Authorize]
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            await _mediator.Send(new UpdateProfileCommand(
+                userId,
+                request.FirstName,
+                request.LastName,
+                request.ProfilePictureUrl));
+
+            return NoContent();
         }
 
         [Authorize(Roles = "SuperAdmin")]
@@ -49,4 +67,6 @@ namespace FixMaster.Identity.API.Controllers
             return Ok(result);
         }
     }
+
+    public record UpdateProfileRequest(string FirstName, string LastName, string? ProfilePictureUrl);
 }
