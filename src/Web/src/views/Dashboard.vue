@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBiddingStore } from '../stores/bidding'
 import { useAuthStore } from '../stores/auth'
 import AppCard from '../components/common/AppCard.vue'
 import AppButton from '../components/common/AppButton.vue'
+import AdminDashboard from './admin/Dashboard.vue'
 
 const router = useRouter()
 const biddingStore = useBiddingStore()
 const authStore = useAuthStore()
 
 const isClient = computed(() => authStore.user?.role === 'Client')
-const isAdmin = computed(() => authStore.user?.role === 'Admin')
+const isAdmin = computed(() => authStore.user?.role === 'Admin' || authStore.user?.role === 'SuperAdmin')
 
 onMounted(() => {
   if (isClient.value) {
@@ -28,11 +29,16 @@ function navigateToRequest(id: string) {
 
 <template>
   <div class="space-y-6">
+    <!-- Admin/SuperAdmin Dashboard (Graphs Only) -->
+    <template v-if="isAdmin">
+      <AdminDashboard />
+    </template>
+
     <!-- Client Dashboard -->
-    <template v-if="isClient">
+    <template v-else-if="isClient">
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-primary">Your Service Requests</h2>
-        <AppButton variant="primary">New Request</AppButton>
+        <AppButton variant="primary" @click="router.push('/post-request')">New Request</AppButton>
       </div>
 
       <div v-if="biddingStore.isLoading && biddingStore.serviceRequests.length === 0" class="flex justify-center py-12">
@@ -55,11 +61,11 @@ function navigateToRequest(id: string) {
           
           <div class="flex justify-between items-center text-sm font-medium">
             <span :class="{
-              'text-yellow-600': request.status === 'pending',
-              'text-green-600': request.status === 'active',
-              'text-blue-600': request.status === 'completed'
+              'text-yellow-600': request.status === 'Open',
+              'text-green-600': request.status === 'InProgress',
+              'text-blue-600': request.status === 'Completed'
             }">
-              {{ request.status.charAt(0).toUpperCase() + request.status.slice(1) }}
+              {{ request.status }}
             </span>
             <span class="text-primary">${{ request.budget }}</span>
           </div>
@@ -75,27 +81,6 @@ function navigateToRequest(id: string) {
             </div>
           </template>
         </AppCard>
-      </div>
-    </template>
-
-    <!-- Admin Dashboard -->
-    <template v-else-if="isAdmin">
-      <div class="flex flex-col items-center justify-center py-24 bg-white rounded-lg shadow-md border border-gray-100">
-        <div class="p-4 bg-emerald-100 rounded-full mb-6">
-          <i class="fas fa-user-shield text-4xl text-emerald-600"></i>
-        </div>
-        <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Control Center</h2>
-        <p class="text-gray-500 mb-8 max-w-md text-center">
-          Welcome to the FixMaster administrative dashboard. From here you can manage all system activities, monitor bids, and oversee service requests.
-        </p>
-        <div class="flex gap-4">
-          <AppButton variant="primary" @click="router.push('/admin/bids')">
-            Manage Bids
-          </AppButton>
-          <AppButton variant="secondary" @click="router.push('/admin/services')">
-            System Overview
-          </AppButton>
-        </div>
       </div>
     </template>
 
@@ -126,11 +111,11 @@ function navigateToRequest(id: string) {
           
           <div class="flex justify-between items-center text-sm font-medium">
             <span :class="{
-              'text-yellow-600': bid.status === 'pending',
-              'text-green-600': bid.status === 'accepted',
-              'text-red-600': bid.status === 'rejected'
+              'text-yellow-600': bid.status === 'Pending',
+              'text-green-600': bid.status === 'Accepted',
+              'text-red-600': bid.status === 'Rejected'
             }">
-              {{ bid.status.charAt(0).toUpperCase() + bid.status.slice(1) }}
+              {{ bid.status }}
             </span>
             <span class="text-primary">${{ bid.amount }}</span>
           </div>

@@ -5,13 +5,19 @@ import { useAuthStore } from '../../stores/auth'
 const authStore = useAuthStore()
 const isLoading = ref(false)
 
-onMounted(async () => {
+const fetchData = async () => {
   isLoading.value = true
   try {
     await authStore.fetchAllUsers()
+  } catch (error) {
+    console.error('Failed to fetch users', error)
   } finally {
     isLoading.value = false
   }
+}
+
+onMounted(() => {
+  fetchData()
 })
 
 const roles = ['SuperAdmin', 'Admin', 'Client', 'Master']
@@ -38,6 +44,14 @@ const handleRoleChange = async (userId: string, event: Event) => {
               <h3 class="font-semibold text-lg text-blueGray-700">
                 User & Role Management
               </h3>
+            </div>
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+              <button 
+                @click="fetchData"
+                class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+              >
+                Refresh
+              </button>
             </div>
           </div>
         </div>
@@ -82,7 +96,7 @@ const handleRoleChange = async (userId: string, event: Event) => {
                   <select 
                     @change="handleRoleChange(u.id, $event)"
                     :value="u.role"
-                    class="border-0 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-32"
+                    class="border border-gray-300 px-3 py-1 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-xs shadow-sm outline-none focus:outline-none focus:ring w-32"
                   >
                     <option v-for="role in roles" :key="role" :value="role">
                       {{ role }}
@@ -91,8 +105,13 @@ const handleRoleChange = async (userId: string, event: Event) => {
                 </td>
               </tr>
               <tr v-if="authStore.allUsers.length === 0 && !isLoading">
-                <td colspan="4" class="text-center py-4 text-blueGray-500">
+                <td colspan="4" class="text-center py-8 text-blueGray-500 italic">
                   No users found.
+                </td>
+              </tr>
+              <tr v-if="isLoading">
+                <td colspan="4" class="text-center py-8">
+                  <span class="text-blueGray-500">Loading users...</span>
                 </td>
               </tr>
             </tbody>

@@ -11,6 +11,13 @@ const isSidebarOpen = ref(false)
 const userRole = computed(() => authStore.user?.role || 'User')
 const isClient = computed(() => authStore.user?.role === 'Client')
 const isMaster = computed(() => authStore.user?.role === 'Master')
+const isAdmin = computed(() => authStore.user?.role === 'Admin' || authStore.user?.role === 'SuperAdmin')
+const isSuperAdmin = computed(() => authStore.user?.role === 'SuperAdmin')
+
+const dashboardLabel = computed(() => {
+  if (isAdmin.value) return 'Overview'
+  return isClient.value ? 'My Requests' : 'My Bids'
+})
 </script>
 
 <template>
@@ -40,7 +47,7 @@ const isMaster = computed(() => authStore.user?.role === 'Master')
       <aside class="hidden lg:flex w-64 bg-secondary flex-col shadow-inner">
         <nav class="flex-1 px-4 py-6 space-y-2">
           <router-link to="/dashboard" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
-            {{ isClient ? 'My Requests' : 'My Bids' }}
+            {{ dashboardLabel }}
           </router-link>
           
           <router-link v-if="isClient" to="/post-request" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
@@ -50,6 +57,15 @@ const isMaster = computed(() => authStore.user?.role === 'Master')
           <router-link v-if="isMaster" to="/browse-requests" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
             Browse Requests
           </router-link>
+
+          <template v-if="isAdmin">
+            <router-link v-if="isSuperAdmin" to="/admin/users" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
+              User Management
+            </router-link>
+            <router-link to="/admin/bids" class="block px-4 py-2 rounded-md text-white hover:bg-primary transition-colors" active-class="bg-primary">
+              Bids Management
+            </router-link>
+          </template>
         </nav>
       </aside>
 
@@ -77,7 +93,7 @@ const isMaster = computed(() => authStore.user?.role === 'Master')
       </div>
       <nav class="px-4 py-6 space-y-2">
         <router-link to="/dashboard" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
-          {{ isClient ? 'My Requests' : 'My Bids' }}
+          {{ dashboardLabel }}
         </router-link>
         <router-link v-if="isClient" to="/post-request" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
           Post New Request
@@ -85,6 +101,14 @@ const isMaster = computed(() => authStore.user?.role === 'Master')
         <router-link v-if="isMaster" to="/browse-requests" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
           Browse Requests
         </router-link>
+        <template v-if="isAdmin">
+          <router-link v-if="isSuperAdmin" to="/admin/users" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
+            User Management
+          </router-link>
+          <router-link to="/admin/bids" @click="isSidebarOpen = false" class="block px-4 py-2 rounded-md text-white hover:bg-primary" active-class="bg-primary">
+            Bids Management
+          </router-link>
+        </template>
       </nav>
     </aside>
   </div>

@@ -10,6 +10,9 @@ public static class DbInitializer
     public static async Task SeedAsync(IServiceProvider serviceProvider)
     {
         var context = serviceProvider.GetRequiredService<FixMasterIdentityDbContext>();
+        
+        // For development, we might want to recreate the DB if schema changes
+        // await context.Database.EnsureDeletedAsync(); 
         await context.Database.EnsureCreatedAsync();
 
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();

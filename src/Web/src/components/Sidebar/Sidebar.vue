@@ -5,14 +5,6 @@
     <div
       class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto"
     >
-      <!-- Toggler -->
-      <button
-        class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-        type="button"
-        v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
       <!-- Brand -->
       <router-link
         class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
@@ -20,135 +12,40 @@
       >
         FixMaster
       </router-link>
-      <!-- User -->
-      <ul class="md:hidden items-center flex flex-wrap list-none">
-        <li class="inline-block relative">
-          <notification-dropdown />
-        </li>
-        <li class="inline-block relative">
-          <user-dropdown />
-        </li>
-      </ul>
+      
       <!-- Collapse -->
       <div
         class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
         v-bind:class="collapseShow"
       >
-        <!-- Collapse header -->
-        <div
-          class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200"
-        >
-          <div class="flex flex-wrap">
-            <div class="w-6/12">
-              <router-link
-                class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                to="/"
-              >
-                FixMaster
-              </router-link>
-            </div>
-            <div class="w-6/12 flex justify-end">
-              <button
-                type="button"
-                class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                v-on:click="toggleCollapseShow('hidden')"
-              >
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- Form -->
-        <form class="mt-6 mb-4 md:hidden">
-          <div class="mb-3 pt-0">
-            <input
-              type="text"
-              placeholder="Search"
-              class="border-0 px-3 py-2 h-12 border border-solid border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
-            />
-          </div>
-        </form>
-
-        <!-- Divider -->
+        <!-- Administrative Control -->
         <template v-if="isAdmin || isSuperAdmin">
           <hr class="my-4 md:min-w-full" />
-          <!-- Heading -->
-          <h6
-            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-          >
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
             Administrative Control
           </h6>
-          <!-- Navigation -->
 
           <ul class="md:flex-col md:min-w-full flex flex-col list-none">
             <li class="items-center">
-              <router-link
-                to="/admin/dashboard"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-tv mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  Overview
+              <router-link to="/admin/dashboard" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-tv mr-2 text-sm"></i> Overview
                 </a>
               </router-link>
             </li>
 
             <li v-if="isSuperAdmin" class="items-center">
-              <router-link
-                to="/admin/users"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-users-cog mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  User Management
+              <router-link to="/admin/users" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-users-cog mr-2 text-sm"></i> User Management
                 </a>
               </router-link>
             </li>
 
             <li class="items-center">
-              <router-link
-                to="/admin/bids"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-gavel mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  Bids Management
+              <router-link to="/admin/bids" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-gavel mr-2 text-sm"></i> Bids Management
                 </a>
               </router-link>
             </li>
@@ -158,55 +55,21 @@
         <!-- Master Section -->
         <template v-if="isMaster">
           <hr class="my-4 md:min-w-full" />
-          <h6
-            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-          >
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
             Master Menu
           </h6>
           <ul class="md:flex-col md:min-w-full flex flex-col list-none">
             <li class="items-center">
-              <router-link
-                to="/dashboard"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-tv mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  My Bids
+              <router-link to="/dashboard" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-tv mr-2 text-sm"></i> My Bids
                 </a>
               </router-link>
             </li>
             <li class="items-center">
-              <router-link
-                to="/browse-requests"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-search mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  Browse Requests
+              <router-link to="/browse-requests" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-search mr-2 text-sm"></i> Browse Requests
                 </a>
               </router-link>
             </li>
@@ -216,135 +79,32 @@
         <!-- Client Section -->
         <template v-if="isClient">
           <hr class="my-4 md:min-w-full" />
-          <h6
-            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-          >
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
             Client Menu
           </h6>
           <ul class="md:flex-col md:min-w-full flex flex-col list-none">
             <li class="items-center">
-              <router-link
-                to="/dashboard"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-tv mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  My Requests
+              <router-link to="/dashboard" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-tv mr-2 text-sm"></i> My Requests
                 </a>
               </router-link>
             </li>
             <li class="items-center">
-              <router-link
-                to="/post-request"
-                v-slot="{ href, navigate, isActive }"
-              >
-                <a
-                  :href="href"
-                  @click="navigate"
-                  class="text-xs uppercase py-3 font-bold block"
-                  :class="[
-                    isActive
-                      ? 'text-emerald-500 hover:text-emerald-600'
-                      : 'text-blueGray-700 hover:text-blueGray-500',
-                  ]"
-                >
-                  <i
-                    class="fas fa-plus mr-2 text-sm"
-                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                  ></i>
-                  Post New Request
+              <router-link to="/post-request" v-slot="{ href, navigate, isActive }">
+                <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[isActive ? 'text-emerald-500' : 'text-blueGray-700']">
+                  <i class="fas fa-plus mr-2 text-sm"></i> Post New Request
                 </a>
               </router-link>
             </li>
           </ul>
         </template>
-
-        <!-- Divider -->
-        <hr v-if="!isAuthenticated" class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          v-if="!isAuthenticated"
-          class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          Auth Layout Pages
-        </h6>
-        <!-- Navigation -->
-
-        <ul v-if="!isAuthenticated" class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-          <li class="items-center">
-            <router-link
-              class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-              to="/auth/login"
-            >
-              <i class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"></i>
-              Login
-            </router-link>
-          </li>
-
-          <li class="items-center">
-            <router-link
-              class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-              to="/auth/register"
-            >
-              <i
-                class="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"
-              ></i>
-              Register
-            </router-link>
-          </li>
-        </ul>
-
-        <!-- Divider -->
-        <hr class="my-4 md:min-w-full" />
-        <!-- Heading -->
-        <h6
-          class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-        >
-          No Layout Pages
-        </h6>
-        <!-- Navigation -->
-
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-          <li class="items-center">
-            <router-link
-              class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-              to="/landing"
-            >
-              <i class="fas fa-newspaper text-blueGray-300 mr-2 text-sm"></i>
-              Landing Page
-            </router-link>
-          </li>
-
-          <li class="items-center">
-            <router-link
-              class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-              to="/profile"
-            >
-              <i class="fas fa-user-circle text-blueGray-300 mr-2 text-sm"></i>
-              Profile Page
-            </router-link>
-          </li>
-        </ul>
       </div>
     </div>
   </nav>
 </template>
 
 <script lang="ts">
-import NotificationDropdown from "@/components/Dropdowns/NotificationDropdown.vue";
-import UserDropdown from "@/components/Dropdowns/UserDropdown.vue";
 import { useAuthStore } from "@/stores/auth";
 import { mapState } from "pinia";
 
@@ -373,10 +133,6 @@ export default {
     toggleCollapseShow: function (classes) {
       this.collapseShow = classes;
     },
-  },
-  components: {
-    NotificationDropdown,
-    UserDropdown,
   },
 };
 </script>
