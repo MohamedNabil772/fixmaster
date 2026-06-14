@@ -21,5 +21,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
+  fileserver:
+    image: fixmaster-fileserver
+    build:
+      context: .
+      dockerfile: src/Services/FileServer/FixMaster.FileServer.API/Dockerfile
+    container_name: fixmaster-fileserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5300:8080"
+    volumes:
+      - fileserver_data:/app/uploads
+
 volumes:
   postgres_data:
+  fileserver_data:
